@@ -102,9 +102,9 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-         kayit_ol kayitOlEkranı = new kayit_ol();
-         kayitOlEkranı.setVisible(true);
+         
+        Register register = new Register();
+         register.setVisible(true);
          this.setVisible(false);
         
     }//GEN-LAST:event_jButton2ActionPerformed
