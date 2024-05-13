@@ -94,19 +94,14 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Component id="register_main" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="jLabel2" min="-2" pref="104" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="follow_res_main" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="72" max="32767" attributes="0"/>
-                          <Component id="user_profile" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                      </Group>
+                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jLabel2" min="-2" pref="104" max="-2" attributes="0"/>
+                      <Component id="follow_res_main" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace pref="47" max="32767" attributes="0"/>
+                  <Component id="user_profile" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -129,8 +124,11 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="register_main">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Kay&#x131;t Ol"/>
+            <Property name="text" type="java.lang.String" value="Reezervasyon yap"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="register_mainActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="follow_res_main">
           <Properties>
