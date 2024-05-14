@@ -4,8 +4,13 @@
  */
 package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.*;
 import javax.swing.JOptionPane;
 
 /**
@@ -239,50 +244,65 @@ public class Register extends javax.swing.JFrame {
         String mail = this.mail.getText();
         String gender;
         String password = this.jPasswordField1.getText();
-        
-        if(female.isSelected())
-        {
+
+        if (female.isSelected()) {
             gender = "Kadın";
-        }
-        else if(male.isSelected())
-        {
+        } else if (male.isSelected()) {
             gender = "Erkek";
-        }
-        else{
-            
+        } else {
+
             gender = "Belirtilmedi";
         }
 
-        Kullanici kullanici = new Kullanici(name, surname, username, mail,password,gender);   
-                
+        Kullanici kullanici = new Kullanici(name, surname, username, mail, password, gender);
+
         String regex_pass = "^(?=.*[A-Z])(?=.*[a-z].*[a-z]).*$";
         Pattern pattern2 = Pattern.compile(regex_pass);
         Matcher password_matcher = pattern2.matcher(password);
-        
-         String regex_name = "[A-Za-z]*";
+
+        String regex_name = "[A-Za-z]*";
         Pattern pattern3 = Pattern.compile(regex_name);
         Matcher name_matcher = pattern3.matcher(name);
-        
+
         // Check if email valid
         String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher email_matcher = pattern.matcher(mail);
-        
+
         if (!email_matcher.matches()) {
-            JOptionPane.showMessageDialog(this,"Lütfen mail adresi giriniz.","Alert",JOptionPane.WARNING_MESSAGE);     
+            JOptionPane.showMessageDialog(this, "Lütfen mail adresi giriniz.", "Alert", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         if (!password_matcher.matches()) {
-           JOptionPane.showMessageDialog(this,"Lütfen şifre giriniz.","Alert",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lütfen şifre giriniz.", "Alert", JOptionPane.WARNING_MESSAGE);
             return;
         }
-         if (!name_matcher.matches()){
-             JOptionPane.showMessageDialog(this,"Lütfen bir isim giriniz.","Alert",JOptionPane.WARNING_MESSAGE);
+        if (!name_matcher.matches()) {
+            JOptionPane.showMessageDialog(this, "Lütfen bir isim giriniz.", "Alert", JOptionPane.WARNING_MESSAGE);
             return;
-         }
-                
-        
+        }
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "INSERT INTO Users (first_name, last_name, username, email, password, gender) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, surname);
+                preparedStatement.setString(3, username);
+                preparedStatement.setString(4, mail);
+                preparedStatement.setString(5, password);
+                preparedStatement.setString(6, gender);
+
+                int affectedRows = preparedStatement.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(this, "User registered successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to register user.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred while registering user.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btn_registerActionPerformed
 
     private void login_screenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_screenActionPerformed
