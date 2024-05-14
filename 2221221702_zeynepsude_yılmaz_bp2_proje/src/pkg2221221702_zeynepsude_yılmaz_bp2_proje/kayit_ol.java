@@ -5,10 +5,13 @@
 
 package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.*;
 import javax.swing.JOptionPane;
 /**
  *
@@ -19,6 +22,7 @@ public class kayit_ol extends javax.swing.JFrame {
     /**
      * Creates new form kayit_ol
      */
+
     public kayit_ol() {
         initComponents();
     }
@@ -247,71 +251,58 @@ public class kayit_ol extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        if(jCheckBox1.isSelected()){
-        
-      
-    String ad = name.getText();
-    String soyad = surname.getText();
-    String mail = register_mail.getText();
-    String parolaStr = phone_register.getText();
-    Kullanici kullanici = new Kullanici(ad, soyad,mail, parolaStr);
-    
-     
-        
-        // Check if password valid
-        String regex_pass = "^(?=.*[A-Z])(?=.*[a-z].*[a-z]).*$";
-        Pattern pattern2 = Pattern.compile(regex_pass);
-        Matcher password_matcher = pattern2.matcher(password);
-        
-        // Check if email valid
-        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher email_matcher = pattern.matcher(mail);
-        
-        if (!email_matcher.matches()) {
-            JOptionPane.showMessageDialog(this,"Please enter a valid e-mail.","Alert",JOptionPane.WARNING_MESSAGE);     
-            return;
-        }
-        
-        if (!password_matcher.matches()) {
-           JOptionPane.showMessageDialog(this,"Please enter a valid password.","Alert",JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-    
-    
-//    try {
-//        // Veritabanına bağlantıyı kur
-//        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hoteldatabase", "root", "Zeys1234.");
-//
-//        // SQL sorgusu oluştur
-//        String sql = "INSERT INTO kullanicilar (ad, soyad, mail, parola) VALUES (?, ?, ?, ?)";
-//        java.sql.PreparedStatement statement = conn.prepareStatement(sql);
-//
-//        // Parametreleri ayarla
-//        statement.setString(1, ad);
-//        statement.setString(2, soyad);
-//        statement.setString(3, mail);
-//        statement.setInt(4, parola);
-//
-//        // Sorguyu çalıştır
-//        int rowsInserted = statement.executeUpdate();
-//        if (rowsInserted > 0) {
-//            System.out.println("Kullanıcı başarıyla eklendi.");
-//        }
-//
-//        // Bağlantıyı kapat
-//        conn.close();
-//    } catch (SQLException e) {
-//        System.out.println("Veritabanına erişim sırasında bir hata oluştu.");
-//        e.printStackTrace();
-//    }
-        }
-        else
-        {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        if (jCheckBox1.isSelected()) {
+            String ad = name.getText();
+            String soyad = surname.getText();
+            String mail = register_mail.getText();
+            String parolaStr = password.getText();
+
+            // Parola ve mail doğrulama işlemleri devam edecek
+            // Check if password valid
+            String regex_pass = "^(?=.*[A-Z])(?=.*[a-z].*[a-z]).*$";
+            Pattern pattern2 = Pattern.compile(regex_pass);
+            Matcher password_matcher = pattern2.matcher(parolaStr); // Parolayı Matcher'a ver
+
+            // Check if email valid
+            String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher email_matcher = pattern.matcher(mail);
+
+            if (!email_matcher.matches()) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid e-mail.", "Alert", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (!password_matcher.matches()) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid password.", "Alert", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            try (Connection connection = DatabaseConnection.getConnection()) {
+                String sql = "INSERT INTO Users (first_name, last_name, email, password, phone, gender) VALUES (?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    preparedStatement.setString(1, ad);
+                    preparedStatement.setString(2, soyad);
+                    preparedStatement.setString(3, mail);
+                    preparedStatement.setString(4, parolaStr);
+                    preparedStatement.setString(5, phone_register.getText());
+                    preparedStatement.setString(6, register_male.isSelected() ? "Male" : "Female");
+
+                    int affectedRows = preparedStatement.executeUpdate();
+                    if (affectedRows > 0) {
+                        JOptionPane.showMessageDialog(this, "User registered successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to register user.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "An error occurred while registering user.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
             checkbox_error.setText("Kabul ediyorum kutusu boş bırakılamaz.");
         }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
