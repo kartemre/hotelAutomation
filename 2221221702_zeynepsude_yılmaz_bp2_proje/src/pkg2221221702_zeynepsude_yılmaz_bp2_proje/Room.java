@@ -4,60 +4,79 @@
  */
 package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 
-/**
- *
- * @author zeysu
- */
-public class Room{
-    private int odaNumarasi;
-    private int kapasite;
-    private double fiyat;
 
-    public Room(int odaNumarasi, int kapasite, double fiyat) {
-        this.odaNumarasi = odaNumarasi;
-        this.kapasite = kapasite;
-        this.fiyat = fiyat;
+// Room class
+class Room {
+    private int roomNumber;
+    private int capacity;
+    private double price;
+    private boolean isOccupied;
+    private boolean isClean;
+
+    public Room(int roomNumber, int capacity, double price) {
+        this.roomNumber = roomNumber;
+        this.capacity = capacity;
+        this.price = price;
+        this.isOccupied = false; // Initially, the room is not occupied
+        this.isClean = true; // Initially, the room is clean
     }
 
-    public int getOdaNumarasi() {
-        return odaNumarasi;
+    // Getter and setter methods
+    // ...
+
+    // Method to book the room
+    public void bookRoom() {
+        if (!isOccupied) {
+            isOccupied = true;
+            System.out.println("Room " + roomNumber + " has been booked.");
+        } else {
+            System.out.println("Room " + roomNumber + " is already occupied.");
+        }
     }
 
-    public void setOdaNumarasi(int odaNumarasi) {
-        this.odaNumarasi = odaNumarasi;
+    // Method to free the room
+    public void freeRoom() {
+        if (isOccupied) {
+            isOccupied = false;
+            System.out.println("Room " + roomNumber + " has been freed.");
+        } else {
+            System.out.println("Room " + roomNumber + " is already free.");
+        }
     }
 
-    public int getKapasite() {
-        return kapasite;
+    // Method to clean the room
+    public void cleanRoom() {
+        if (!isClean) {
+            isClean = true;
+            System.out.println("Room " + roomNumber + " has been cleaned.");
+        } else {
+            System.out.println("Room " + roomNumber + " is already clean.");
+        }
     }
 
-    public void setKapasite(int kapasite) {
-        this.kapasite = kapasite;
+    // Method to display room details
+    public void displayRoomDetails() {
+        System.out.println("Room Number: " + roomNumber);
+        System.out.println("Capacity: " + capacity);
+        System.out.println("Price: $" + price + " per night");
+        System.out.println("Occupied: " + (isOccupied ? "Yes" : "No"));
+        System.out.println("Clean: " + (isClean ? "Yes" : "No"));
     }
 
-    public double getFiyat() {
-        return fiyat;
-    }
+    // Other utility methods
+    // ...
+}
 
-    public void setFiyat(double fiyat) {
-        this.fiyat = fiyat;
+// StandardRoom class inherits from Room
+class StandardRoom extends Room {
+    public StandardRoom(int roomNumber) {
+        super(roomNumber, 2, 100); // Default capacity and price for a standard room
     }
 }
-    
-class SingleRoom extends Room {
-    public SingleRoom(int roomNumber, double price) {
-        super(roomNumber, 1, price);
-    }
-}
 
-class DoubleRoom extends Room {
-    public DoubleRoom(int roomNumber, double price) {
-        super(roomNumber, 2, price);
-    }
-}
-
-class TripleRoom extends Room {
-    public TripleRoom(int roomNumber, double price) {
-        super(roomNumber, 3, price);
+// SuiteRoom class inherits from Room
+class SuiteRoom extends Room {
+    public SuiteRoom(int roomNumber) {
+        super(roomNumber, 4, 200); // Default capacity and price for a suite room
     }
 }

@@ -448,8 +448,6 @@ public class EditProfileDialog extends javax.swing.JDialog {
     private void register_mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_mainActionPerformed
         // TODO add your handling code here:
 
-      
-        this.setVisible(false);
     }//GEN-LAST:event_register_mainActionPerformed
 
     private void cityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityActionPerformed

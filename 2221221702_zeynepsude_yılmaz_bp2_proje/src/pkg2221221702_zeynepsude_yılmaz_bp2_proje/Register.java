@@ -254,7 +254,7 @@ public class Register extends javax.swing.JFrame {
             gender = "Belirtilmedi";
         }
 
-        Kullanici kullanici = new Kullanici(name, surname, username, mail, password, gender);
+        User user = new User( name,  surname,  mail,  password,  username,  gender);
 
         String regex_pass = "^(?=.*[A-Z])(?=.*[a-z].*[a-z]).*$";
         Pattern pattern2 = Pattern.compile(regex_pass);
