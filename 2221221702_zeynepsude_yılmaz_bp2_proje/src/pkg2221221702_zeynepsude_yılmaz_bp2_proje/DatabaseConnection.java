@@ -10,7 +10,9 @@ package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
  */
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/mydatabase";
@@ -19,6 +21,32 @@ public class DatabaseConnection {
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
+    public static User getUser(String username, String password) {
+        User user = null;
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "SELECT first_name, last_name, email, password FROM Users WHERE username = ? AND password = ?";
+            java.sql.PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User();
+                user.setName(resultSet.getString("first_name"));
+                user.setSurname(resultSet.getString("last_name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setUsername(resultSet.getString("username")); 
+                user.setGender(resultSet.getString("gender"));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    
     public static void main(String[] args) {
         try {
             Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);

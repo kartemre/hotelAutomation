@@ -13,8 +13,18 @@ public class Hotel_main_2 extends javax.swing.JFrame {
     /**
      * Creates new form Hotel_main_2
      */
-    public Hotel_main_2() {
+    private User currentUser;
+
+    public Hotel_main_2(User user) {
+        this.currentUser = user;
         initComponents();
+        displayUserInfo();
+    }
+    
+    private void displayUserInfo() {
+        user_name1.setText(currentUser.getName());
+        user_surname.setText(currentUser.getSurname());
+        user_mail.setText(currentUser.getEmail());
     }
 
     /**
@@ -43,6 +53,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         user_mail = new javax.swing.JLabel();
         user_password = new javax.swing.JLabel();
         change_profile = new javax.swing.JButton();
+        user_name1 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -126,7 +137,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
 
         user_mail.setText("jLabel9");
 
-        user_password.setText("jLabel9");
+        user_password.setText("********");
 
         change_profile.setText("Profilimi Düzenle");
         change_profile.addActionListener(new java.awt.event.ActionListener() {
@@ -134,6 +145,8 @@ public class Hotel_main_2 extends javax.swing.JFrame {
                 change_profileActionPerformed(evt);
             }
         });
+
+        user_name1.setText("jLabel9");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -153,12 +166,15 @@ public class Hotel_main_2 extends javax.swing.JFrame {
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(38, 38, 38)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(user_name, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(user_name1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(user_name, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(user_password, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
                                 .addComponent(user_mail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(user_surname, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(419, Short.MAX_VALUE))
+                .addContainerGap(377, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,7 +182,8 @@ public class Hotel_main_2 extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(user_name))
+                    .addComponent(user_name)
+                    .addComponent(user_name1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -181,7 +198,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
                     .addComponent(user_password))
                 .addGap(40, 40, 40)
                 .addComponent(change_profile)
-                .addContainerGap(351, Short.MAX_VALUE))
+                .addContainerGap(362, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Profilim", jPanel5);
@@ -396,9 +413,36 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // EditProfileDialog.java
+public class EditProfileDialog extends javax.swing.JDialog {
+
+    private User user;
+    private User updatedUser;
+
+    public EditProfileDialog(java.awt.Frame parent, boolean modal, User user) {
+        super(parent, modal);
+        this.user = user;
+        initComponents();
+        displayUserInfo();
+    }
+
+
+    public User getUpdatedUser() {
+        return updatedUser;
+    }
+
+    // Diğer kodlar...
+}
+
     private void change_profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_change_profileActionPerformed
         // TODO add your handling code here:
-       
+        // Kullanıcı profili düzenleme formunu aç
+        EditProfileDialog editProfileDialog = new EditProfileDialog(this, true, currentUser);
+        editProfileDialog.setVisible(true);
+
+        // Formdan dönen bilgilerle kullanıcı bilgilerini güncelle
+        currentUser = editProfileDialog.getUpdatedUser();
+        displayUserInfo();
     }//GEN-LAST:event_change_profileActionPerformed
 
     private void register_mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_mainActionPerformed
@@ -438,11 +482,11 @@ public class Hotel_main_2 extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Hotel_main_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        User user = new User();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Hotel_main_2().setVisible(true);
+                new Hotel_main_2(user).setVisible(true);
             }
         });
     }
@@ -485,6 +529,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
     private javax.swing.JRadioButton two_person;
     private javax.swing.JLabel user_mail;
     private javax.swing.JLabel user_name;
+    private javax.swing.JLabel user_name1;
     private javax.swing.JLabel user_password;
     private javax.swing.JLabel user_surname;
     // End of variables declaration//GEN-END:variables
