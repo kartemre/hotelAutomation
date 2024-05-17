@@ -4,12 +4,13 @@
  */
 package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 
+
+
 /**
  *
  * @author zeysu
  */
 public class Admin_page extends javax.swing.JFrame {
-
     /**
      * Creates new form Admin_page
      */
@@ -55,6 +56,11 @@ public class Admin_page extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         list_customer.setText("MÜŞTERİLERİ LİSTELE");
+        list_customer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                list_customerActionPerformed(evt);
+            }
+        });
 
         remove_costumer.setText("MÜŞTERİYİ SİL");
 
@@ -82,6 +88,11 @@ public class Admin_page extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void list_customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_list_customerActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_list_customerActionPerformed
 
     /**
      * @param args the command line arguments

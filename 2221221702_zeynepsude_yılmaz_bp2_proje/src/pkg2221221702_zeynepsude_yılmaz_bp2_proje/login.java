@@ -38,8 +38,8 @@ public class login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        user_password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 102, 102));
@@ -77,7 +77,6 @@ public class login extends javax.swing.JFrame {
         jLabel2.setText("PAROLA");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 83, -1));
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 99, -1));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 99, -1));
 
         jButton3.setBackground(new java.awt.Color(0, 51, 153));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
@@ -88,6 +87,7 @@ public class login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, -1, -1));
+        jPanel1.add(user_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 100, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,7 +117,7 @@ public class login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String username = jTextField1.getText();
-        String password = jTextField2.getText();
+        String password = user_password.getText();
         
         if (checkLogin(username, password)) {
             User user = DatabaseConnection.getUser(username, password);
@@ -202,6 +202,6 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JPasswordField user_password;
     // End of variables declaration//GEN-END:variables
 }
