@@ -17,16 +17,7 @@ public class User {
     private String gender;   // Cinsiyet alanı eklendi
 
     // Getter ve Setter metodları her bir alan için
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User() {
-    }
+    public User() {}
 
     public User(String name, String surname, String email, String password, String username, String gender) {
         this.name = name;
@@ -35,6 +26,14 @@ public class User {
         this.password = password;
         this.username = username;
         this.gender = gender;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSurname() {
