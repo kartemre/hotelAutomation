@@ -18,16 +18,41 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseConnection {
+
     private static final String URL = "jdbc:mysql://localhost:3306/mydatabase";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Zeys1234.";
-    
+    private static final String PASSWORD = "Emre123.";
+
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
-    
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT username, first_name, last_name, email, password, gender FROM Users";
+
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setUsername(resultSet.getString("username"));
+                user.setName(resultSet.getString("first_name"));
+                user.setSurname(resultSet.getString("last_name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setGender(resultSet.getString("gender"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
     public static User getUser(String username, String password) {
         User user = null;
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -43,7 +68,7 @@ public class DatabaseConnection {
                 user.setSurname(resultSet.getString("last_name"));
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
-                user.setUsername(resultSet.getString("username")); 
+                user.setUsername(resultSet.getString("username"));
                 user.setGender(resultSet.getString("gender"));
             }
 
@@ -53,8 +78,8 @@ public class DatabaseConnection {
         }
         return user;
     }
-    
-    public void updateUser(String username, String newFirstName, String newLastName, String newEmail, String newPassword) {
+
+    public void updateUser(String username, String newFirstName, String newLastName, String newEmail, String newPassword) throws SQLException {
         String updateQuery = "UPDATE Users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE username = ?";
 
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -70,7 +95,7 @@ public class DatabaseConnection {
             if (rowAffected > 0) {
                 System.out.println("User updated successfully.");
             } else {
-            System.out.println("No user found to update.");
+                System.out.println("No user found to update.");
             }
 
         } catch (SQLException e) {
@@ -78,7 +103,20 @@ public class DatabaseConnection {
         }
     }
 
+    public boolean deleteUser(String username) {
+        String deleteQuery = "DELETE FROM Users WHERE username = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+            preparedStatement.setString(1, username);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public void addRoom(int roomNumber, int capacity, double price, String roomType) {
         String insertQuery = "INSERT INTO Rooms (roomNumber, capacity, price, roomType) VALUES (?, ?, ?, ?)";
@@ -91,15 +129,15 @@ public class DatabaseConnection {
             preparedStatement.setString(4, roomType);
 
             int rowAffected = preparedStatement.executeUpdate();
-        if (rowAffected > 0) {
-            System.out.println("Room added successfully.");
-        }
+            if (rowAffected > 0) {
+                System.out.println("Room added successfully.");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void addReservation(String username, int roomNumber, String reservationCity, String reservationStartDate, String reservationEndDate, boolean threeMeals, boolean hotPool, boolean funCenter) {
         String insertQuery = "INSERT INTO Reservations (username, roomNumber, reservationCity, reservationStartDate, reservationEndDate, threeMeals, hotPool, funCenter) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 

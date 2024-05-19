@@ -4,13 +4,16 @@
  */
 package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 
-
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author zeysu
  */
 public class Admin_page extends javax.swing.JFrame {
+
     /**
      * Creates new form Admin_page
      */
@@ -63,6 +66,11 @@ public class Admin_page extends javax.swing.JFrame {
         });
 
         remove_costumer.setText("MÜŞTERİYİ SİL");
+        remove_costumer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove_costumerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,9 +98,43 @@ public class Admin_page extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void list_customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_list_customerActionPerformed
-        // TODO add your handling code here:
-        
+        // Fetch data from the database and populate the jTable1 table
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        List<User> users = dbConnection.getAllUsers();
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Clear the existing table data
+
+        for (User user : users) {
+            model.addRow(new Object[]{user.getName(), user.getSurname(), user.getUsername(), user.getEmail()});
+        }        // TODO add your handling code here:
+
     }//GEN-LAST:event_list_customerActionPerformed
+
+    private void remove_costumerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_costumerActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Lütfen silmek istediğiniz müşteriyi seçin.", "Hata", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String username = jTable1.getValueAt(selectedRow, 2).toString(); // Kullanıcı adını al
+        int confirm = JOptionPane.showConfirmDialog(this, "Seçili müşteriyi silmek istediğinize emin misiniz?", "Müşteri Sil", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Müşteriyi sil
+            DatabaseConnection dbConnection = new DatabaseConnection();
+            boolean success = dbConnection.deleteUser(username);
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Müşteri başarıyla silindi.", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
+                // Tabloyu güncelle
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.removeRow(selectedRow);
+            } else {
+                JOptionPane.showMessageDialog(this, "Müşteri silinirken bir hata oluştu.", "Hata", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_remove_costumerActionPerformed
 
     /**
      * @param args the command line arguments

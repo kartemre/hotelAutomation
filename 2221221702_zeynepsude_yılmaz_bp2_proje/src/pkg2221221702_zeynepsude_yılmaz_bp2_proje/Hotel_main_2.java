@@ -6,10 +6,12 @@ package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 
 import pkg2221221702_zeynepsude_yılmaz_bp2_proje.EditProfileDialog;
 import pkg2221221702_zeynepsude_yılmaz_bp2_proje.EditProfileDialog;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -28,11 +30,15 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         initComponents();
         displayUserInfo();
         buttonGroup1 = new ButtonGroup();
+        buttonGroup2 = new ButtonGroup();
 
         buttonGroup1.add(one_person);
         buttonGroup1.add(two_person);
         buttonGroup1.add(three_person);
         buttonGroup1.add(four_person);
+        buttonGroup2.add(standart);
+        buttonGroup2.add(suit);
+
     }
 
     private void displayUserInfo() {
@@ -55,6 +61,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         jFrame2 = new javax.swing.JFrame();
         jFrame3 = new javax.swing.JFrame();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         follow_res_main = new javax.swing.JButton();
@@ -360,6 +367,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
         jLabel16.setText("Kapasite");
 
+        buttonGroup2.add(suit);
         suit.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         suit.setText("Suit Oda");
         suit.addActionListener(new java.awt.event.ActionListener() {
@@ -368,6 +376,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup2.add(standart);
         standart.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         standart.setText("Standart Oda");
         standart.addActionListener(new java.awt.event.ActionListener() {
@@ -532,11 +541,33 @@ public class Hotel_main_2 extends javax.swing.JFrame {
 
         // Formdan dönen güncellenmiş kullanıcı bilgilerini al
         User updatedUser = editProfileDialog.getUpdatedUser();
+
         if (updatedUser != null) {
-            // Kullanıcı bilgilerini güncelle
-            currentUser = updatedUser;
-            displayUserInfo();
+            // Veritabanı bağlantısını aç ve kullanıcı bilgilerini güncelle
+            DatabaseConnection dbConnect = new DatabaseConnection();
+            try {
+                System.out.println("Updating user: " + updatedUser.getUsername());
+                dbConnect.updateUser(
+                        updatedUser.getUsername(),
+                        updatedUser.getName(),
+                        updatedUser.getSurname(),
+                        updatedUser.getEmail(),
+                        updatedUser.getPassword()
+                );
+                // Kullanıcı bilgilerini güncelle
+                currentUser = updatedUser;
+                displayUserInfo();
+            } catch (SQLException e) {
+                System.out.println("Exception caught in update process.");
+                e.printStackTrace();
+                // Hata mesajını kullanıcıya göster
+                JOptionPane.showMessageDialog(this, "Kullanıcı bilgileri güncellenirken hata oluştu.", "Hata", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            System.out.println("Updated user is null.");
         }
+
+
     }//GEN-LAST:event_change_profileActionPerformed
 
     private void register_mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_mainActionPerformed
@@ -548,34 +579,31 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         boolean threemeal;
         boolean pool;
         boolean funC;
-        int room_number=0;
+        int room_number = 0;
         String username = user_name.getText();
-        
+
         threemeal = food.isSelected();
         pool = pool_service.isSelected();
         funC = ent_service.isSelected();
-        
-        if(standart.isSelected())
-        {
-            oda="Standart";
+
+        if (standart.isSelected()) {
+            oda = "Standart";
+        } else {
+            oda = "Suit";
         }
-        else{
-            oda="Suit";
+
+        if (baslangic == null || bitis == null) {
+            JOptionPane.showMessageDialog(this, "Lütfen başlangıç ve bitiş tarihlerini seçin.");
+        } else if (baslangic.after(bitis)) {
+            JOptionPane.showMessageDialog(this, "Başlangıç tarihi bitiş tarihinden sonra olamaz.");
         }
-        
-         if (baslangic == null || bitis == null) {
-                    JOptionPane.showMessageDialog(this, "Lütfen başlangıç ve bitiş tarihlerini seçin.");
-                } else if (baslangic.after(bitis)) {
-                    JOptionPane.showMessageDialog(this, "Başlangıç tarihi bitiş tarihinden sonra olamaz.");
-                }
-         if(!((suit.isSelected() || standart.isSelected()) && (one_person.isSelected() || two_person.isSelected() || three_person.isSelected()))){
-             JOptionPane.showMessageDialog(this, "Lütfen oda tercihinizi belirleyiniz.");
-         }
-         else{
-              JOptionPane.showMessageDialog(this, "Rezervasyon Oluşturuldu.");
-         }
-          //addReservation(username, room_number, city, baslangic, bitis, threemeal, pool, funC);veri tabanı kayıt
-         // File_write(username, room_number, city, baslangic, bitis, threemeal, pool, funC); burda dosya yazma olacak
+        if (!((suit.isSelected() || standart.isSelected()) && (one_person.isSelected() || two_person.isSelected() || three_person.isSelected()))) {
+            JOptionPane.showMessageDialog(this, "Lütfen oda tercihinizi belirleyiniz.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Rezervasyon Oluşturuldu.");
+        }
+        //addReservation(username, room_number, city, baslangic, bitis, threemeal, pool, funC);veri tabanı kayıt
+        // File_write(username, room_number, city, baslangic, bitis, threemeal, pool, funC); burda dosya yazma olacak
     }//GEN-LAST:event_register_mainActionPerformed
 
     private void city1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_city1ActionPerformed
@@ -682,6 +710,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton change_profile;
     private javax.swing.JComboBox<String> city1;
     private javax.swing.JCheckBox ent_service;
@@ -734,4 +763,3 @@ public class Hotel_main_2 extends javax.swing.JFrame {
     private javax.swing.JLabel user_surname;
     // End of variables declaration//GEN-END:variables
 }
-  
