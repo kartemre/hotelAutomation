@@ -40,6 +40,8 @@ public class login extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         user_password = new javax.swing.JPasswordField();
+        show_password = new javax.swing.JButton();
+        pass = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 102, 102));
@@ -87,15 +89,28 @@ public class login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, -1, -1));
+
+        user_password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                user_passwordActionPerformed(evt);
+            }
+        });
         jPanel1.add(user_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 100, -1));
+
+        show_password.setText("👀");
+        show_password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                show_passwordActionPerformed(evt);
+            }
+        });
+        jPanel1.add(show_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 170, 30, 20));
+        jPanel1.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 60, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,6 +174,16 @@ public class login extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void user_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_user_passwordActionPerformed
+
+    private void show_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_show_passwordActionPerformed
+        // TODO add your handling code here:
+        String password = user_password.getText();
+        pass.setText(password);
+    }//GEN-LAST:event_show_passwordActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -202,6 +227,8 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel pass;
+    private javax.swing.JButton show_password;
     private javax.swing.JPasswordField user_password;
     // End of variables declaration//GEN-END:variables
 }
