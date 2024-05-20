@@ -4,6 +4,7 @@
  */
 package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 
+import javax.swing.JFileChooser;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +36,7 @@ public class Admin_page extends javax.swing.JFrame {
         list_customer = new javax.swing.JButton();
         remove_costumer = new javax.swing.JButton();
         export_costumer = new javax.swing.JButton();
+        import_costumer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,6 +82,13 @@ public class Admin_page extends javax.swing.JFrame {
             }
         });
 
+        import_costumer.setText("MÜŞTERİLERİ İÇE AKTAR");
+        import_costumer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                import_costumerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,8 +99,9 @@ public class Admin_page extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(list_customer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(remove_costumer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(export_costumer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(export_costumer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(import_costumer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,7 +112,9 @@ public class Admin_page extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(remove_costumer)
                 .addGap(18, 18, 18)
-                .addComponent(export_costumer))
+                .addComponent(export_costumer)
+                .addGap(18, 18, 18)
+                .addComponent(import_costumer))
         );
 
         pack();
@@ -155,6 +167,19 @@ public class Admin_page extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Kullanıcılar başarıyla " + filePath + " dosyasına aktarıldı.", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_export_costumerActionPerformed
 
+    private void import_costumerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_import_costumerActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            DatabaseConnection dbConnection = new DatabaseConnection();
+            List<User> users = dbConnection.readUsersFromFile(filePath);
+            dbConnection.addMultipleUsers(users);
+            JOptionPane.showMessageDialog(this, "Kullanıcılar başarıyla eklendi.");
+        }
+    }//GEN-LAST:event_import_costumerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -192,6 +217,7 @@ public class Admin_page extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton export_costumer;
+    private javax.swing.JButton import_costumer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton list_customer;

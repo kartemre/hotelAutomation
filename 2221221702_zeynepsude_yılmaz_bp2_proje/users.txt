@@ -1,0 +1,3 @@
+John,Doe,johndoe,john.doe@example.com,password123,Male
+Jane,Doe,janedoe,jane.doe@example.com,password456,Female
+Alice,Smith,alicesmith,alice.smith@example.com,password789,Female

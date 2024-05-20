@@ -8,7 +8,9 @@ package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
  *
  * @author emrekart
  */
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -132,6 +134,47 @@ public class DatabaseConnection {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public void addUser(User user) {
+        String query = "INSERT INTO Users (first_name, last_name, username, email, password, gender) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getUsername());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setString(6, user.getGender());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void addMultipleUsers(List<User> users) {
+        for (User user : users) {
+            addUser(user);
+        }
+    }
+    
+        public List<User> readUsersFromFile(String filePath) {
+        List<User> users = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] userDetails = line.split(",");
+                if (userDetails.length == 6) {
+                    User user = new User(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4], userDetails[5]);
+                    users.add(user);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public void addRoom(int roomNumber, int capacity, double price, String roomType) {
