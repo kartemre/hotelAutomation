@@ -765,7 +765,6 @@ public class Hotel_main_2 extends javax.swing.JFrame {
             model.addElement(reservationDetails);
 
         }
-
     }//GEN-LAST:event_follow_res_mainActionPerformed
 
     private void cıkısItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cıkısItemActionPerformed

@@ -54,14 +54,12 @@ public class DatabaseConnection {
         }
         return users;
     }
-    
+
     public static String getValidTestUsername() {
         // Implement logic to fetch a valid username from the database for testing
         // Example:
         String query = "SELECT username FROM users LIMIT 1"; // Adjust the query as needed
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             if (rs.next()) {
                 return rs.getString("username");
             }
@@ -70,7 +68,7 @@ public class DatabaseConnection {
         }
         return null;
     }
-    
+
     public void exportUsersToFile(String filePath) {
         List<User> users = getAllUsers();
 
@@ -92,29 +90,28 @@ public class DatabaseConnection {
     public static User getUser(String username) {
         User user = null;
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "SELECT first_name, last_name, email, password FROM Users WHERE username = ?";
-            java.sql.PreparedStatement statement = connection.prepareStatement(sql);
+            String sql = "SELECT username, first_name, last_name, email, password, gender FROM Users WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 user = new User();
+                user.setUsername(resultSet.getString("username"));
                 user.setName(resultSet.getString("first_name"));
                 user.setSurname(resultSet.getString("last_name"));
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
-                user.setUsername(resultSet.getString("username"));
                 user.setGender(resultSet.getString("gender"));
             }
 
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return user;
     }
 
-    public static boolean validateUser(String username, String password) {
+    public static boolean validateUser(String username, String password) throws SQLException {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -255,14 +252,12 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
-    
+
     public List<Reservations> getAllReservations() {
         List<Reservations> reservations = new ArrayList<>();
         String query = "SELECT reservationID, reservationCity, reservationStartDate, reservationEndDate, threeMeals, hotPool, funCenter FROM reservations";
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("reservationID");
@@ -273,7 +268,7 @@ public class DatabaseConnection {
                 boolean pool = resultSet.getBoolean("hotPool");
                 boolean funC = resultSet.getBoolean("funCenter");
 
-                Reservations reservation = new Reservations(id, city, start, finish, threemeal, pool, funC); 
+                Reservations reservation = new Reservations(id, city, start, finish, threemeal, pool, funC);
                 reservations.add(reservation);
             }
         } catch (SQLException e) {
@@ -281,7 +276,6 @@ public class DatabaseConnection {
         }
         return reservations;
     }
-
 
     public boolean deleteReservation(int reservationId) {
         String deleteSQL = "DELETE FROM reservations WHERE reservationID = ?";
