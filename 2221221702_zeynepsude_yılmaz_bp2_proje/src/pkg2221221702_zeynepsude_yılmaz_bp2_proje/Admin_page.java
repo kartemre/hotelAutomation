@@ -34,6 +34,7 @@ public class Admin_page extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         list_customer = new javax.swing.JButton();
         remove_costumer = new javax.swing.JButton();
+        export_costumer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,6 +73,13 @@ public class Admin_page extends javax.swing.JFrame {
             }
         });
 
+        export_costumer.setText("MÜŞTERİLERİ DIŞA AKTAR");
+        export_costumer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                export_costumerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,8 +89,9 @@ public class Admin_page extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(list_customer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(remove_costumer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(remove_costumer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(export_costumer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,7 +100,9 @@ public class Admin_page extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(list_customer)
                 .addGap(30, 30, 30)
-                .addComponent(remove_costumer))
+                .addComponent(remove_costumer)
+                .addGap(18, 18, 18)
+                .addComponent(export_costumer))
         );
 
         pack();
@@ -136,6 +147,14 @@ public class Admin_page extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_remove_costumerActionPerformed
 
+    private void export_costumerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_export_costumerActionPerformed
+        // TODO add your handling code here:
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        String filePath = "users_export.csv"; // Dosya yolunu belirleyin
+        dbConnection.exportUsersToFile(filePath);
+        JOptionPane.showMessageDialog(this, "Kullanıcılar başarıyla " + filePath + " dosyasına aktarıldı.", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_export_costumerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -172,6 +191,7 @@ public class Admin_page extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton export_costumer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton list_customer;

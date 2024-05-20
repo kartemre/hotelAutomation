@@ -8,16 +8,14 @@ package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
  *
  * @author emrekart
  */
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-import javax.swing.JOptionPane;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +49,24 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         return users;
+    }
+    
+    public void exportUsersToFile(String filePath) {
+        List<User> users = getAllUsers();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write("Ad,Soyad,Kullanıcı Adı,Mail,Şifre,Cinsiyet");
+            writer.newLine();
+
+            for (User user : users) {
+                writer.write(user.getName() + "," + user.getSurname() + "," + user.getUsername() + "," + user.getEmail() + "," + user.getPassword() + "," + user.getGender());
+                writer.newLine();
+            }
+
+            System.out.println("Kullanıcılar başarıyla dosyaya aktarıldı.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static User getUser(String username, String password) {

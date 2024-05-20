@@ -29,8 +29,9 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="list_customer" max="32767" attributes="0"/>
                   <Component id="remove_costumer" max="32767" attributes="0"/>
+                  <Component id="export_costumer" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -42,6 +43,8 @@
               <Component id="list_customer" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Component id="remove_costumer" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="export_costumer" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -109,6 +112,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="remove_costumerActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="export_costumer">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="M&#xdc;&#x15e;TER&#x130;LER&#x130; DI&#x15e;A AKTAR"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="export_costumerActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
