@@ -4,7 +4,6 @@ package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author emrekart
@@ -14,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 
 public class EditProfileDialog extends JDialog {
 
@@ -30,17 +28,6 @@ public class EditProfileDialog extends JDialog {
         initComponents();
         displayUserInfo();
     }
-    public User getUpdatedUser() {
-        User updatedUser = new User();
-        updatedUser.setName(firstNameField.getText());
-        updatedUser.setSurname(lastNameField.getText());
-        updatedUser.setEmail(emailField.getText());
-        updatedUser.setPassword(new String(passwordField.getPassword()));
-        updatedUser.setUsername(cuser.getUsername()); // Kullanıcı adını güncellemiyoruz
-
-        return updatedUser;
-    }
-
 
     private void initComponents() {
         setTitle("Edit Profile");
@@ -98,7 +85,61 @@ public class EditProfileDialog extends JDialog {
         emailField.setText(cuser.getEmail());
         passwordField.setText(cuser.getPassword());
     }
-/*
+
+    private void saveChanges() {
+        String newFirstName = firstNameField.getText();
+        String newLastName = lastNameField.getText();
+        String newEmail = emailField.getText();
+        String newPassword = new String(passwordField.getPassword());
+
+        try {
+            DatabaseConnection dbConnection = new DatabaseConnection();
+            dbConnection.updateUser(cuser.getUsername(), newFirstName, newLastName, newEmail, newPassword);
+
+            // Kullanıcı bilgilerini güncelle
+            cuser.setName(newFirstName);
+            cuser.setSurname(newLastName);
+            cuser.setEmail(newEmail);
+            cuser.setPassword(newPassword);
+
+            dispose();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Kullanıcı bilgileri güncellenirken hata oluştu.", "Hata", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public User getUpdatedUser() {
+        User updatedUser = new User();
+        updatedUser.setName(firstNameField.getText());
+        updatedUser.setSurname(lastNameField.getText());
+        updatedUser.setEmail(emailField.getText());
+        updatedUser.setPassword(new String(passwordField.getPassword()));
+        updatedUser.setUsername(cuser.getUsername()); // Kullanıcı adını güncellemiyoruz
+        cuser = updatedUser;
+        String newFirstName = firstNameField.getText();
+        String newLastName = lastNameField.getText();
+        String newEmail = emailField.getText();
+        String newPassword = new String(passwordField.getPassword());
+
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        try {
+            dbConnection.updateUser(cuser.getUsername(), newFirstName, newLastName, newEmail, newPassword);
+
+            // Kullanıcı bilgilerini güncelle
+            cuser.setName(newFirstName);
+            cuser.setSurname(newLastName);
+            cuser.setEmail(newEmail);
+            cuser.setPassword(newPassword);
+
+            dispose();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Kullanıcı bilgileri güncellenirken hata oluştu.", "Hata", JOptionPane.ERROR_MESSAGE);
+        }
+        return updatedUser;
+    }
+    /*
     private void saveChanges() {
         
         String uName = cuser.getUsername();
@@ -119,7 +160,8 @@ public class EditProfileDialog extends JDialog {
 
         dispose();
     }
-*/
+     */
+ /*
     private void saveChanges() {
         try {
             DatabaseConnection dbConnection = new DatabaseConnection();
@@ -141,4 +183,5 @@ public class EditProfileDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Kullanıcı bilgileri güncellenirken hata oluştu.", "Hata", JOptionPane.ERROR_MESSAGE);
         }
     }
+     */
 }

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author zeysu
@@ -18,7 +19,6 @@ public class login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
-
     public login() {
         initComponents();
     }
@@ -121,57 +121,34 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         
+
         Register register = new Register();
         register.setVisible(true);
         this.setVisible(false);
-     
-         
-         
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String username = jTextField1.getText();
         String password = user_password.getText();
-        
-        if (checkLogin(username, password)) {
-            User user = DatabaseConnection.getUser(username, password);
-            Hotel_main_2 hotel_main = new Hotel_main_2(user);
+
+        if (DatabaseConnection.validateUser(username, password)) {
+            Hotel_main_2 hotel_main = new Hotel_main_2(username);
             hotel_main.setVisible(true);
             this.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(this, "Geçersiz kullanıcı adı veya parola", "Giriş Başarısız", JOptionPane.ERROR_MESSAGE);
         }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
-    private boolean checkLogin(String username, String password) {
-        boolean isValid = false;
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
 
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    isValid = resultSet.next();
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Veritabanı bağlantı hatası", "Hata", JOptionPane.ERROR_MESSAGE);
-        }
-
-        return isValid;
-    }
-
-    
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         Admin_login admin = new Admin_login();
         admin.setVisible(true);
         this.setVisible(false);
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void user_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_passwordActionPerformed

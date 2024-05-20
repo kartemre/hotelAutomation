@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import java.sql.SQLException;
 /**
  *
  * @author zeysu
@@ -168,15 +169,19 @@ public class Admin_page extends javax.swing.JFrame {
     }//GEN-LAST:event_export_costumerActionPerformed
 
     private void import_costumerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_import_costumerActionPerformed
-        // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
             DatabaseConnection dbConnection = new DatabaseConnection();
             List<User> users = dbConnection.readUsersFromFile(filePath);
-            dbConnection.addMultipleUsers(users);
-            JOptionPane.showMessageDialog(this, "Kullanıcılar başarıyla eklendi.");
+            try {
+                dbConnection.addMultipleUsers(users);
+                JOptionPane.showMessageDialog(this, "Kullanıcılar başarıyla eklendi.", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Kullanıcılar eklenirken bir hata oluştu.", "Hata", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_import_costumerActionPerformed
 

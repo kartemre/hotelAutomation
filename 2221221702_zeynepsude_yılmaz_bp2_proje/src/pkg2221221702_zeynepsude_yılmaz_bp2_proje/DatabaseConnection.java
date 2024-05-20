@@ -17,9 +17,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class DatabaseConnection {
 
@@ -53,6 +55,22 @@ public class DatabaseConnection {
         return users;
     }
     
+    public static String getValidTestUsername() {
+        // Implement logic to fetch a valid username from the database for testing
+        // Example:
+        String query = "SELECT username FROM users LIMIT 1"; // Adjust the query as needed
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getString("username");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public void exportUsersToFile(String filePath) {
         List<User> users = getAllUsers();
 
@@ -71,13 +89,12 @@ public class DatabaseConnection {
         }
     }
 
-    public static User getUser(String username, String password) {
+    public static User getUser(String username) {
         User user = null;
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "SELECT first_name, last_name, email, password FROM Users WHERE username = ? AND password = ?";
+            String sql = "SELECT first_name, last_name, email, password FROM Users WHERE username = ?";
             java.sql.PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
-            statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -95,6 +112,24 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public static boolean validateUser(String username, String password) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    return resultSet.next();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(" validate failed.");
+
+        }
+        return false;
     }
 
     public void updateUser(String username, String newFirstName, String newLastName, String newEmail, String newPassword) throws SQLException {
@@ -135,12 +170,11 @@ public class DatabaseConnection {
             return false;
         }
     }
-    
-    public void addUser(User user) {
+
+    public static void addUser(User user) throws SQLException {
         String query = "INSERT INTO Users (first_name, last_name, username, email, password, gender) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getUsername());
@@ -153,14 +187,14 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
-    
-    public void addMultipleUsers(List<User> users) {
+
+    public void addMultipleUsers(List<User> users) throws SQLException {
         for (User user : users) {
             addUser(user);
         }
     }
-    
-        public List<User> readUsersFromFile(String filePath) {
+
+    public List<User> readUsersFromFile(String filePath) {
         List<User> users = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -221,9 +255,36 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+    
+    public List<Reservations> getAllReservations() {
+        List<Reservations> reservations = new ArrayList<>();
+        String query = "SELECT reservationID, reservationCity, reservationStartDate, reservationEndDate, threeMeals, hotPool, funCenter FROM reservations";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("reservationID");
+                String city = resultSet.getString("reservationCity");
+                Date start = resultSet.getDate("reservationStartDate");
+                Date finish = resultSet.getDate("reservationEndDate");
+                boolean threemeal = resultSet.getBoolean("threeMeals");
+                boolean pool = resultSet.getBoolean("hotPool");
+                boolean funC = resultSet.getBoolean("funCenter");
+
+                Reservations reservation = new Reservations(id, city, start, finish, threemeal, pool, funC); 
+                reservations.add(reservation);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservations;
+    }
+
 
     public boolean deleteReservation(int reservationId) {
-        String deleteSQL = "DELETE FROM reservations WHERE reservation_id = ?";
+        String deleteSQL = "DELETE FROM reservations WHERE reservationID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection()) {
             // Silme sorgusunu hazırlama

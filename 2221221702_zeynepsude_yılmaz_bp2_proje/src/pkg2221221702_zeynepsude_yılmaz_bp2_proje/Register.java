@@ -275,7 +275,7 @@ public class Register extends javax.swing.JFrame {
             gender = "Belirtilmedi";
         }
 
-        User user = new User( name,  surname,  mail,  password,  username,  gender);
+        User user = new User(name, surname, mail, password, username, gender);
 
         String regex_pass = "^(?=.*[A-Z])(?=.*[a-z].*[a-z]).*$";
         Pattern pattern2 = Pattern.compile(regex_pass);
@@ -303,23 +303,10 @@ public class Register extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lütfen bir isim giriniz.", "Alert", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO Users (first_name, last_name, username, email, password, gender) VALUES (?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, name);
-                preparedStatement.setString(2, surname);
-                preparedStatement.setString(3, username);
-                preparedStatement.setString(4, mail);
-                preparedStatement.setString(5, password);
-                preparedStatement.setString(6, gender);
-
-                int affectedRows = preparedStatement.executeUpdate();
-                if (affectedRows > 0) {
-                    JOptionPane.showMessageDialog(this, "User registered successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Failed to register user.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+        try {
+            DatabaseConnection dbConnection = new DatabaseConnection();
+            dbConnection.addUser(user);
+            JOptionPane.showMessageDialog(this, "Kullanıcı başarıyla kaydedildi.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "An error occurred while registering user.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -335,7 +322,7 @@ public class Register extends javax.swing.JFrame {
 
     private void show_passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_show_passActionPerformed
         // TODO add your handling code here:
-         String u_password = password.getText();
+        String u_password = password.getText();
         show.setText(u_password);
     }//GEN-LAST:event_show_passActionPerformed
 
@@ -366,7 +353,6 @@ public class Register extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

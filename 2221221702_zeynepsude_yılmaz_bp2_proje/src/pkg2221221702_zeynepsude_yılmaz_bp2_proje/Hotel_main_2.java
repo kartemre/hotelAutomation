@@ -5,14 +5,16 @@
 package pkg2221221702_zeynepsude_yılmaz_bp2_proje;
 
 import pkg2221221702_zeynepsude_yılmaz_bp2_proje.EditProfileDialog;
-import pkg2221221702_zeynepsude_yılmaz_bp2_proje.EditProfileDialog;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.awt.event.ActionEvent;
 import java.util.Date;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,9 +26,8 @@ public class Hotel_main_2 extends javax.swing.JFrame {
      * Creates new form Hotel_main_2
      */
     private User currentUser;
-
-    public Hotel_main_2(User user) {
-        this.currentUser = user;
+    public Hotel_main_2(String username) {
+        currentUser = DatabaseConnection.getUser(username);
         initComponents();
         displayUserInfo();
         buttonGroup1 = new ButtonGroup();
@@ -67,7 +68,7 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         follow_res_main = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        remove = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -108,6 +109,11 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         pay = new javax.swing.JButton();
         ucret1 = new javax.swing.JLabel();
         four_person = new javax.swing.JRadioButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        log_page = new javax.swing.JMenuItem();
+        cıkısItem = new javax.swing.JMenu();
+        exit = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -150,40 +156,47 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(0, 102, 102));
 
         follow_res_main.setText("Rezervasyonlarımı Göster");
+        follow_res_main.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                follow_res_mainActionPerformed(evt);
+            }
+        });
 
+        jList1.setBackground(new java.awt.Color(204, 255, 255));
         jScrollPane1.setViewportView(jList1);
 
-        jButton1.setText("SİL");
+        remove.setText("Sil");
+        remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(follow_res_main))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addComponent(jButton1)))
-                .addContainerGap(324, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(105, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(follow_res_main)
+                .addGap(34, 34, 34)
+                .addComponent(remove, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(148, 148, 148))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(follow_res_main)
-                        .addGap(29, 29, 29)
-                        .addComponent(jButton1)))
-                .addContainerGap(410, Short.MAX_VALUE))
+                .addGap(53, 53, 53)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(follow_res_main)
+                    .addComponent(remove))
+                .addContainerGap(282, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Rezervasyonlarım", jPanel4);
@@ -517,6 +530,43 @@ public class Hotel_main_2 extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Rezervasyon Oluştur", jPanel3);
 
+        jMenu1.setText("Giriş Ekranı");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
+
+        log_page.setText("Giriş Ekranı için tıklayınız");
+        log_page.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                log_pageActionPerformed(evt);
+            }
+        });
+        jMenu1.add(log_page);
+
+        jMenuBar1.add(jMenu1);
+
+        cıkısItem.setForeground(new java.awt.Color(0, 102, 102));
+        cıkısItem.setText("Çıkış");
+        cıkısItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cıkısItemActionPerformed(evt);
+            }
+        });
+
+        exit.setText("çıkış yapmak için tıklayınız");
+        exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitActionPerformed(evt);
+            }
+        });
+        cıkısItem.add(exit);
+
+        jMenuBar1.add(cıkısItem);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -572,15 +622,14 @@ public class Hotel_main_2 extends javax.swing.JFrame {
 
     private void register_mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_mainActionPerformed
         // TODO add your handling code here:
+        int id = (int) (Math.random() * 21);
         String city = city1.getSelectedItem().toString();
-        Date baslangic = start_date.getDate();
-        Date bitis = finish_date.getDate();
+        Date start = start_date.getDate();
+        Date finish = finish_date.getDate();
         String oda;
         boolean threemeal;
         boolean pool;
         boolean funC;
-        int room_number = 0;
-        String username = user_name.getText();
 
         threemeal = food.isSelected();
         pool = pool_service.isSelected();
@@ -592,9 +641,9 @@ public class Hotel_main_2 extends javax.swing.JFrame {
             oda = "Suit";
         }
 
-        if (baslangic == null || bitis == null) {
+        if (start == null || finish == null) {
             JOptionPane.showMessageDialog(this, "Lütfen başlangıç ve bitiş tarihlerini seçin.");
-        } else if (baslangic.after(bitis)) {
+        } else if (start.after(finish)) {
             JOptionPane.showMessageDialog(this, "Başlangıç tarihi bitiş tarihinden sonra olamaz.");
         }
         if (!((suit.isSelected() || standart.isSelected()) && (one_person.isSelected() || two_person.isSelected() || three_person.isSelected()))) {
@@ -602,8 +651,28 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Rezervasyon Oluşturuldu.");
         }
-        //addReservation(username, room_number, city, baslangic, bitis, threemeal, pool, funC);veri tabanı kayıt
-        // File_write(username, room_number, city, baslangic, bitis, threemeal, pool, funC); burda dosya yazma olacak
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "INSERT INTO reservations (reservationID, reservationCity, reservationStartDate, reservationEndDate, threeMeals, hotPool, funCenter) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(2, city);
+                preparedStatement.setDate(3, new java.sql.Date(start.getTime()));
+                preparedStatement.setDate(4, new java.sql.Date(start.getTime()));
+                preparedStatement.setBoolean(5, threemeal);
+                preparedStatement.setBoolean(6, pool);
+                preparedStatement.setBoolean(7, funC);
+
+                int affectedRows = preparedStatement.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(this, "Rezervasyon Kaydedildi", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, " Kayıt yapılamadı.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Kullanıcı kaydedilirken bir hata oluştu.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_register_mainActionPerformed
 
     private void city1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_city1ActionPerformed
@@ -673,37 +742,109 @@ public class Hotel_main_2 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_four_personActionPerformed
 
+
+    private void follow_res_mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_follow_res_mainActionPerformed
+        // TODO add your handling code here:
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        List<Reservations> reservations = dbConnection.getAllReservations();
+
+        // JTable'ınızın modelini elde edin (örneğin jTable1)
+        DefaultListModel<String> model = new DefaultListModel<>();
+        jList1.setModel(model);
+
+        for (Reservations reservation : reservations) {
+            String reservationDetails = String.format("ID: %d, City: %s, Start: %s, Finish: %s, ThreeMeals: %b, Pool: %b, FunC: %b",
+                    reservation.getId(),
+                    reservation.getCity(),
+                    reservation.getStart().toString(),
+                    reservation.getFinish().toString(),
+                    reservation.isThreemeal(),
+                    reservation.isPool(),
+                    reservation.isFunC());
+
+            model.addElement(reservationDetails);
+
+        }
+
+    }//GEN-LAST:event_follow_res_mainActionPerformed
+
+    private void cıkısItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cıkısItemActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_cıkısItemActionPerformed
+
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void log_pageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_log_pageActionPerformed
+        // TODO add your handling code here:
+        login log = new login();
+        log.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_log_pageActionPerformed
+
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitActionPerformed
+
+    
+    private int extractReservationId(String selectedReservation) {
+        String[] parts = selectedReservation.split(",");
+        for (String part : parts) {
+            if (part.trim().startsWith("ID:")) {
+                return Integer.parseInt(part.trim().split(":")[1].trim());
+            }
+        }
+        return -1;
+    }
+
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+        int selectedIndex = jList1.getSelectedIndex();
+        DatabaseConnection dbConnection = new DatabaseConnection();
+
+        if (selectedIndex != -1) {
+            // DefaultListModel'i elde edin
+            DefaultListModel<String> model = (DefaultListModel<String>) jList1.getModel();
+
+            // Seçilen öğenin verilerini alın
+            String selectedReservation = model.getElementAt(selectedIndex);
+
+            // Seçilen rezervasyonun ID'sini alın
+            int reservationId = extractReservationId(selectedReservation);
+
+            // Veritabanından rezervasyonu sil
+            boolean deletionSuccessful = dbConnection.deleteReservation(reservationId);
+
+            // Eğer silme işlemi başarılıysa, listeden öğeyi kaldırın
+            if (deletionSuccessful) {
+                model.remove(selectedIndex);
+            } else {
+                // Silme işlemi başarısızsa kullanıcıya bir hata mesajı gösterilebilir
+                JOptionPane.showMessageDialog(this, "Rezervasyon silinirken bir hata oluştu.", "Hata", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            // Hiçbir öğe seçilmediyse kullanıcıya bir uyarı mesajı gösterilebilir
+            JOptionPane.showMessageDialog(this, "Lütfen bir rezervasyon seçin.", "Uyarı", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_removeActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Hotel_main_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Hotel_main_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Hotel_main_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Hotel_main_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        User user = new User();
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Hotel_main_2(user).setVisible(true);
+                // Simulate fetching a valid username from the database
+                String testUsername = DatabaseConnection.getValidTestUsername(); // Implement this method to return a valid username
+                if (testUsername != null) {
+                    new Hotel_main_2(testUsername).setVisible(true);
+                } else {
+                    System.out.println("No valid username found for testing.");
+                }
             }
         });
     }
@@ -713,12 +854,13 @@ public class Hotel_main_2 extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton change_profile;
     private javax.swing.JComboBox<String> city1;
+    private javax.swing.JMenu cıkısItem;
     private javax.swing.JCheckBox ent_service;
+    private javax.swing.JMenuItem exit;
     private com.toedter.calendar.JDateChooser finish_date;
     private javax.swing.JButton follow_res_main;
     private javax.swing.JCheckBox food;
     private javax.swing.JRadioButton four_person;
-    private javax.swing.JButton jButton1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
@@ -739,6 +881,8 @@ public class Hotel_main_2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -746,10 +890,12 @@ public class Hotel_main_2 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JMenuItem log_page;
     private javax.swing.JRadioButton one_person;
     private javax.swing.JButton pay;
     private javax.swing.JCheckBox pool_service;
     private javax.swing.JButton register_main;
+    private javax.swing.JButton remove;
     private javax.swing.JRadioButton standart;
     private com.toedter.calendar.JDateChooser start_date;
     private javax.swing.JRadioButton suit;
@@ -762,4 +908,5 @@ public class Hotel_main_2 extends javax.swing.JFrame {
     private javax.swing.JLabel user_password;
     private javax.swing.JLabel user_surname;
     // End of variables declaration//GEN-END:variables
+
 }
