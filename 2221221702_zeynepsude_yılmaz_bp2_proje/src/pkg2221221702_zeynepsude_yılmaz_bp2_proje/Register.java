@@ -285,7 +285,6 @@ public class Register extends javax.swing.JFrame {
         Pattern pattern3 = Pattern.compile(regex_name);
         Matcher name_matcher = pattern3.matcher(name);
 
-        // Check if email valid
         String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher email_matcher = pattern.matcher(mail);

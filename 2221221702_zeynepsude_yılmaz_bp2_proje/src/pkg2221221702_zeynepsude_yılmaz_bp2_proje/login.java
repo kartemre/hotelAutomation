@@ -33,7 +33,7 @@ public class login extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        log = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -51,15 +51,15 @@ public class login extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(0, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 153));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("GİRİŞ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        log.setBackground(new java.awt.Color(0, 102, 153));
+        log.setForeground(new java.awt.Color(255, 255, 255));
+        log.setText("GİRİŞ");
+        log.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                logActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
+        jPanel1.add(log, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
 
         jButton2.setBackground(new java.awt.Color(0, 102, 153));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
@@ -103,7 +103,7 @@ public class login extends javax.swing.JFrame {
                 show_passwordActionPerformed(evt);
             }
         });
-        jPanel1.add(show_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 170, 30, 20));
+        jPanel1.add(show_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 170, 50, 20));
         jPanel1.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 60, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -126,7 +126,7 @@ public class login extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void logActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logActionPerformed
         String username = jTextField1.getText();
         String password = user_password.getText();
         try {
@@ -142,7 +142,7 @@ public class login extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Veritabanı hatası: " + e.getMessage(), "Hata", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_logActionPerformed
 
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -211,13 +211,13 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton log;
     private javax.swing.JLabel pass;
     private javax.swing.JButton show_password;
     private javax.swing.JPasswordField user_password;
